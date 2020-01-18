@@ -8,10 +8,8 @@ import (
 )
 
 func Test_generateSignature(t *testing.T) {
-	// Based on Authentication > Signature section in https://developer.bca.co.id/documentation/#signature
-
-	ApiSecret := "22a2d25e-765d-41e1-8d29-da68dcb5698b"
-	AccessToken := "lIWOt2p29grUo59bedBUrBY3pnzqQX544LzYPohcGHOuwn8AUEdUKS"
+	// Test 1 & 2 based on Authentication > Signature section in https://developer.bca.co.id/documentation/#signature
+	// Test 3 & 4 based on testGenerateSign() & testGenerateSign2() in  https://github.com/odenktools/php-bca/blob/develop/test/unit/bcaConstructorTest.php
 
 	type args struct {
 		apiSecret   string
@@ -28,11 +26,11 @@ func Test_generateSignature(t *testing.T) {
 		wantStrToSign string
 		wantErr       bool
 	}{
-		{name: "POST Example", args: args{
-			apiSecret:   ApiSecret,
+		{name: "official bca/POST Example", args: args{
+			apiSecret:   "22a2d25e-765d-41e1-8d29-da68dcb5698b",
 			method:      http.MethodPost,
 			path:        "/banking/corporates/transfers",
-			accessToken: AccessToken,
+			accessToken: "lIWOt2p29grUo59bedBUrBY3pnzqQX544LzYPohcGHOuwn8AUEdUKS",
 			requestBody: `
 			{ 
 				"CorporateID" : "BCAAPI2016",
@@ -53,16 +51,28 @@ func Test_generateSignature(t *testing.T) {
 			wantStrToSign: "POST:/banking/corporates/transfers:lIWOt2p29grUo59bedBUrBY3pnzqQX544LzYPohcGHOuwn8AUEdUKS:e3cf5797ac4ac02f7dad89ed2c5f5615c9884b2d802a504e4aebb76f45b8bdfb:2016-02-03T10:00:00.000+07:00",
 			wantErr:       false,
 		},
-		{name: "GET Example", args: args{
-			apiSecret:   ApiSecret,
+		{name: "official bca/GET Example", args: args{
+			apiSecret:   "22a2d25e-765d-41e1-8d29-da68dcb5698b",
 			method:      http.MethodGet,
 			path:        "/banking/v2/corporates/BCAAPI2016/accounts/0201245680/statements?StartDate=2016-09-01&EndDate=2016-09-01",
-			accessToken: AccessToken,
+			accessToken: "lIWOt2p29grUo59bedBUrBY3pnzqQX544LzYPohcGHOuwn8AUEdUKS",
 			requestBody: "",
 			timestamp:   "2016-02-03T10:00:00.000+07:00",
 		},
 			wantSign:      "3ac124303746d222387d4398dddf33201a384aa22137aa08f4d9843c6f467a48",
 			wantStrToSign: "GET:/banking/v2/corporates/BCAAPI2016/accounts/0201245680/statements?EndDate=2016-09-01&StartDate=2016-09-01:lIWOt2p29grUo59bedBUrBY3pnzqQX544LzYPohcGHOuwn8AUEdUKS:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855:2016-02-03T10:00:00.000+07:00",
+			wantErr:       false,
+		},
+		{name: "php-bca/testGenerateSign/GET Example", args: args{
+			apiSecret:   "9db65b91-01ff-46ec-9274-3f234b677450",
+			method:      http.MethodGet,
+			path:        "/banking/v2/corporates/corpid/accounts/0063001004",
+			accessToken: "NopUsBuSbT3eNrQTfcEZN2aAL52JT1SlRgoL1MIslsX5gGIgv4YUf",
+			requestBody: "",
+			timestamp:   "2017-09-30T22:03:35.800+07:00",
+		},
+			wantSign:      "761eaec0e544c9cf5010b406ade39228ab182401e57f17fc54b9daa5ad99d0d6",
+			wantStrToSign: "GET:/banking/v2/corporates/corpid/accounts/0063001004:NopUsBuSbT3eNrQTfcEZN2aAL52JT1SlRgoL1MIslsX5gGIgv4YUf:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855:2017-09-30T22:03:35.800+07:00",
 			wantErr:       false,
 		},
 	}

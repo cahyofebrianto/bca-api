@@ -97,7 +97,7 @@ func (api *API) PostGetToken(ctx context.Context) (*AuthToken, error) {
 }
 
 // Generic POST request to API
-func (api *API) Call(ctx context.Context, httpMethod string, path string, bodyReqPayload []byte, dtoResp interface{}) (err error) {
+func (api *API) Call(ctx context.Context, httpMethod string, path string, additionalHeader map[string]string, bodyReqPayload []byte, dtoResp interface{}) (err error) {
 	// urlQuery := url.Values{"access_token": []string{api.accessToken}}
 	urlQuery := url.Values{}
 	urlTarget, err := buildURL(api.config.URL, path, urlQuery)
@@ -129,6 +129,10 @@ func (api *API) Call(ctx context.Context, httpMethod string, path string, bodyRe
 	api.log(ctx).Info(httpMethod + " " + urlTarget + " " + timestamp)
 	// api.log(ctx).Info("StrToSIGN: " + strToSign)
 	// api.log(ctx).Info("SIGN: " + signature)
+
+	for key, val := range additionalHeader {
+		req.Header.Set(key, val)
+	}
 
 	resp, err := api.retryablehttpClient.Do(req)
 	if err != nil {

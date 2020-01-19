@@ -21,7 +21,7 @@ import (
 	bcaCtx "github.com/purwaren/bca-api/context"
 )
 
-type API struct {
+type api struct {
 	config              Config
 	httpClient          *http.Client // for postGetToken only
 	retryablehttpClient *retryablehttp.Client
@@ -31,12 +31,12 @@ type API struct {
 	bcaSessID   string
 }
 
-func NewAPI(config Config) *API {
+func newAPI(config Config) *api {
 
 	httpClient := cleanhttp.DefaultPooledClient()
 	retryablehttpClient := retryablehttp.NewClient()
 
-	api := API{config: config,
+	api := api{config: config,
 		httpClient:          httpClient,
 		retryablehttpClient: retryablehttpClient,
 	}
@@ -44,7 +44,7 @@ func NewAPI(config Config) *API {
 	return &api
 }
 
-func (api *API) SetAccessTokenAndSessID(accessToken, bcaSessID string) {
+func (api *api) setAccessTokenAndSessID(accessToken, bcaSessID string) {
 	api.mutex.Lock()
 	defer api.mutex.Unlock()
 
@@ -52,7 +52,9 @@ func (api *API) SetAccessTokenAndSessID(accessToken, bcaSessID string) {
 	api.bcaSessID = bcaSessID
 }
 
-func (api *API) PostGetToken(ctx context.Context) (*AuthToken, error) {
+// === AUTH ===
+
+func (api *api) postGetToken(ctx context.Context) (*AuthToken, error) {
 	urlTarget, err := buildURL(api.config.URL, "/api/oauth/token", url.Values{})
 	if err != nil {
 		return nil, errors.Trace(err)
@@ -96,8 +98,8 @@ func (api *API) PostGetToken(ctx context.Context) (*AuthToken, error) {
 	return &dtoResp, nil
 }
 
-// Generic POST request to API
-func (api *API) Call(ctx context.Context, httpMethod string, path string, additionalHeader map[string]string, bodyReqPayload []byte, dtoResp interface{}) (err error) {
+// Generic HTTP request to API
+func (api *api) call(ctx context.Context, httpMethod string, path string, additionalHeader map[string]string, bodyReqPayload []byte, dtoResp interface{}) (err error) {
 	// urlQuery := url.Values{"access_token": []string{api.accessToken}}
 	urlQuery := url.Values{}
 	urlTarget, err := buildURL(api.config.URL, path, urlQuery)
@@ -160,7 +162,7 @@ func (api *API) Call(ctx context.Context, httpMethod string, path string, additi
 }
 
 // === misc func ===
-func (api *API) log(ctx context.Context) *zap.SugaredLogger {
+func (api *api) log(ctx context.Context) *zap.SugaredLogger {
 	return logger.Logger(bcaCtx.WithBCASessID(ctx, api.bcaSessID))
 }
 

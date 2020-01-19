@@ -120,11 +120,15 @@ func (api *API) Call(ctx context.Context, httpMethod string, path string, bodyRe
 	timestamp := time.Now().Format("2006-01-02T15:04:05.999Z07:00")
 	req.Header.Set("X-BCA-Timestamp", timestamp)
 
-	signature, err := generateSignature(api.config.APISecret, httpMethod, path, api.accessToken, string(bodyReqPayload), timestamp)
+	signature, _, err := generateSignature(api.config.APISecret, httpMethod, path, api.accessToken, string(bodyReqPayload), timestamp)
 	if err != nil {
 		return errors.Trace(err)
 	}
 	req.Header.Set("X-BCA-Signature", signature)
+
+	api.log(ctx).Info(httpMethod + " " + urlTarget + " " + timestamp)
+	// api.log(ctx).Info("StrToSIGN: " + strToSign)
+	// api.log(ctx).Info("SIGN: " + signature)
 
 	resp, err := api.retryablehttpClient.Do(req)
 	if err != nil {
@@ -137,7 +141,6 @@ func (api *API) Call(ctx context.Context, httpMethod string, path string, bodyRe
 		return errors.Trace(err)
 	}
 
-	api.log(ctx).Info(httpMethod + " " + urlTarget + " " + timestamp)
 	api.log(ctx).Info(resp.StatusCode)
 	api.log(ctx).Info(string(bodyRespBytes))
 

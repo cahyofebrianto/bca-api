@@ -87,3 +87,31 @@ type FundTransferResponse struct {
 	ReferenceID     string
 	Status          string
 }
+
+//FundTransferDomesticRequest represents fund transfer request message
+type FundTransferDomesticRequest struct {
+	TransactionID            string
+	TransactionDate          string
+	ReferenceID              string
+	SourceAccountNumber      string
+	BeneficiaryAccountNumber string
+	BeneficiaryBankCode      string
+	BeneficiaryName          string
+	Amount                   float64 `json:",string"`
+	TransferType             string
+	BeneficiaryCustType      string
+	BeneficiaryCustResidence string
+	CurrencyCode             string
+	Remark1                  string
+	Remark2                  string
+}
+
+//FundTransferDomesticResponse represents fund transfer response message
+type FundTransferDomesticResponse struct {
+	Error
+	TransactionID   string
+	TransactionDate string
+	ReferenceID     string
+	PPUNumber       string
+	Status          string
+}

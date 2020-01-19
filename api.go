@@ -105,8 +105,8 @@ func (api *api) postGetToken(ctx context.Context) (*AuthToken, error) {
 }
 
 // === BANKING ===
-func (api *api) bankingGetBalance(ctx context.Context, accountNum string) (*BalanceInfoResponse, error) {
-	path := fmt.Sprintf("/banking/v3/corporates/%s/accounts/%s", api.config.CorporateID, accountNum)
+func (api *api) bankingGetBalance(ctx context.Context, dtoReq BalanceInfoRequest) (*BalanceInfoResponse, error) {
+	path := fmt.Sprintf("/banking/v3/corporates/%s/accounts/%s", api.config.CorporateID, dtoReq.AccountNumber)
 
 	var balanceInfoResp BalanceInfoResponse
 	if err := api.call(ctx, http.MethodGet, path, nil, []byte(""), &balanceInfoResp); err != nil {

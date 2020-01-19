@@ -38,6 +38,10 @@ type AccountBalance struct {
 	English          string  `json:",omitempty"`
 }
 
+type BalanceInfoRequest struct {
+	AccountNumber string
+}
+
 //BalanceInfoResponse represents account balance information response message
 type BalanceInfoResponse struct {
 	Error

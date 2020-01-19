@@ -28,6 +28,8 @@ func (b *BCA) BankingGetBalance(ctx context.Context, dtoReq BalanceInfoRequest) 
 func (b *BCA) BankingFundTransfer(ctx context.Context, dtoReq FundTransferRequest) (*FundTransferResponse, error) {
 	ctx = bcaCtx.WithBCASessID(ctx, b.bcaSessID)
 
+	dtoReq.CorporateID = b.config.CorporateID
+
 	b.log(ctx).Info("=== START BANKING FUND_TRANSFER ===")
 	b.log(ctx).Infof("REQUEST: %+v", dtoReq)
 

@@ -75,6 +75,32 @@ func Test_generateSignature(t *testing.T) {
 			wantStrToSign: "GET:/banking/v2/corporates/corpid/accounts/0063001004:NopUsBuSbT3eNrQTfcEZN2aAL52JT1SlRgoL1MIslsX5gGIgv4YUf:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855:2017-09-30T22:03:35.800+07:00",
 			wantErr:       false,
 		},
+		// TODO: STILL FAILED
+		// {name: "php-bca/testGenerateSign2/GET Example", args: args{
+		// 	apiSecret:   "9db65b91-01ff-46ec-9274-3f234b677450",
+		// 	method:      http.MethodGet,
+		// 	path:        "/banking/v2/corporates/corpid/accounts/0063001004",
+		// 	accessToken: "NopUsBuSbT3eNrQTfcEZN2aAL52JT1SlRgoL1MIslsX5gGIgv4YUf",
+		// 	requestBody: `
+		// 	{
+		// 		"Amount" : "100000.00",
+		// 		"BeneficiaryAccountNumber" : "8329389",
+		// 		"CorporateID" : "8293489283499",
+		// 		"CurrencyCode" : "idr",
+		// 		"ReferenceID" : "",
+		// 		"Remark1" : "Ini adalah remark1",
+		// 		"Remark2" : "Ini adalah remark2",
+		// 		"SourceAccountNumber" : "09202990",
+		// 		"TransactionDate" : "2019-02-30T22:03:35.800+07:00",
+		// 		"TransactionID" : "0020292"
+		// 	}
+		// 	`,
+		// 	timestamp: "2017-09-30T22:03:35.800+07:00",
+		// },
+		// 	wantSign:      "1878f0eedcd93ff53054c8fc9ea271a29c99ea2f752f636c1cc765948009a90b",
+		// 	wantStrToSign: "GET:/banking/v2/corporates/corpid/accounts/0063001004:NopUsBuSbT3eNrQTfcEZN2aAL52JT1SlRgoL1MIslsX5gGIgv4YUf:4a24a20ceb436d69bd344902a71e9bdf3a45d11efac1754b48015fb2a291b3df:2017-09-30T22:03:35.800+07:00",
+		// 	wantErr:       false,
+		// },
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

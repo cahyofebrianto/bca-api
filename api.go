@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -19,6 +20,11 @@ import (
 	"go.uber.org/zap"
 
 	bcaCtx "github.com/purwaren/bca-api/context"
+)
+
+var (
+	httpHeaderChannelID    string = "ChannelID"
+	httpHeaderCredentialID string = "CredentialID"
 )
 
 type api struct {
@@ -96,6 +102,52 @@ func (api *api) postGetToken(ctx context.Context) (*AuthToken, error) {
 	}
 
 	return &dtoResp, nil
+}
+
+// === BANKING ===
+func (api *api) bankingGetBalance(ctx context.Context, accountNum string) (*BalanceInfoResponse, error) {
+	path := fmt.Sprintf("/banking/v3/corporates/%s/accounts/%s", api.config.CorporateID, accountNum)
+
+	var balanceInfoResp BalanceInfoResponse
+	if err := api.call(ctx, http.MethodGet, path, nil, []byte(""), &balanceInfoResp); err != nil {
+		return nil, errors.Trace(err)
+	}
+	return &balanceInfoResp, nil
+}
+
+func (api *api) bankingPostFundTransfer(ctx context.Context, dtoReq FundTransferRequest) (*FundTransferResponse, error) {
+	path := fmt.Sprintf("/banking/corporates/transfers")
+
+	jsonReq, err := json.Marshal(dtoReq)
+	if err != nil {
+		return nil, errors.Trace(err)
+	}
+
+	var fundTransferResp FundTransferResponse
+	if err := api.call(ctx, http.MethodPost, path, nil, jsonReq, &fundTransferResp); err != nil {
+		return nil, errors.Trace(err)
+	}
+	return &fundTransferResp, nil
+}
+
+func (api *api) bankingPostFundTransferDomestic(ctx context.Context, dtoReq FundTransferDomesticRequest) (*FundTransferDomesticResponse, error) {
+	path := fmt.Sprintf("/banking/corporates/transfers/domestic")
+
+	jsonReq, err := json.Marshal(dtoReq)
+	if err != nil {
+		return nil, errors.Trace(err)
+	}
+
+	headers := map[string]string{
+		httpHeaderChannelID:    api.config.ChannelID,
+		httpHeaderCredentialID: api.config.CredentialID,
+	}
+
+	var fundTransferDomesticResp FundTransferDomesticResponse
+	if err := api.call(ctx, http.MethodPost, path, headers, jsonReq, &fundTransferDomesticResp); err != nil {
+		return nil, errors.Trace(err)
+	}
+	return &fundTransferDomesticResp, nil
 }
 
 // Generic HTTP request to API

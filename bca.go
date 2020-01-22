@@ -1,7 +1,10 @@
 package bca
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"sync"
@@ -69,11 +72,25 @@ func (b *BCA) setAccessToken(accessToken string) {
 func (b *BCA) retryPolicy(ctx context.Context, resp *http.Response, err error) (bool, error) {
 	// do not retry on context.Canceled or context.DeadlineExceeded
 	if ctx.Err() != nil {
+		b.log(ctx).Infof("[Not Retry] Got error in context: %+v", ctx.Err())
 		return false, ctx.Err()
 	}
 
-	if resp.StatusCode == http.StatusUnauthorized {
-		b.log(ctx).Infof("Retry to auth. Got resp (code: %d, status: %s). Prev err: %+v", resp.StatusCode, resp.Status, err)
+	bodyRespBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		b.log(ctx).Infof("[Not Retry] Failed to read response body: %+v", err)
+		return false, err
+	}
+	resp.Body = ioutil.NopCloser(bytes.NewBuffer(bodyRespBytes))
+
+	var dtoResp Error
+	if err := json.NewDecoder(bytes.NewReader(bodyRespBytes)).Decode(&dtoResp); err != nil {
+		b.log(ctx).Infof("[Not Retry] Failed to decode error: %+v", err)
+		return false, err
+	}
+
+	if resp.StatusCode == http.StatusUnauthorized || dtoResp.ErrorCode == "ESB-14-009" {
+		b.log(ctx).Infof("[Retry] to auth. Got resp (code: %d, status: %s). Prev err: %+v. ErrorResp: %+v", resp.StatusCode, resp.Status, err, dtoResp)
 		_, errAuth := b.DoAuthentication(ctx)
 
 		return true, errAuth

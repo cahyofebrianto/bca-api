@@ -159,7 +159,7 @@ func (api *api) call(ctx context.Context, httpMethod string, path string, additi
 		return errors.Trace(err)
 	}
 
-	req, err := retryablehttp.NewRequest(httpMethod, urlTarget, bytes.NewBuffer(bodyReqPayload))
+	req, err := http.NewRequest(httpMethod, urlTarget, bytes.NewBuffer(bodyReqPayload))
 	if err != nil {
 		return errors.Trace(err)
 	}
@@ -188,7 +188,7 @@ func (api *api) call(ctx context.Context, httpMethod string, path string, additi
 		req.Header.Set(key, val)
 	}
 
-	resp, err := api.retryablehttpClient.Do(req)
+	resp, err := api.httpClient.Do(req)
 	if err != nil {
 		return errors.Trace(err)
 	}

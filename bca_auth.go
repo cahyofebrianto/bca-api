@@ -7,7 +7,7 @@ import (
 )
 
 func (b *BCA) DoAuthentication(ctx context.Context) (*AuthToken, error) {
-	b.log(ctx).Info("=== DO_AUTH ===")
+	b.log(ctx).Info("=== START DO_AUTH ===")
 
 	dtoResp, err := b.api.postGetToken(ctx)
 	if err != nil {

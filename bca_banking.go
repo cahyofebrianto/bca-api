@@ -8,13 +8,20 @@ import (
 	bcaCtx "github.com/purwaren/bca-api/context"
 )
 
-func (b *BCA) BankingGetBalance(ctx context.Context, dtoReq BalanceInfoRequest) (*BalanceInfoResponse, error) {
+func (b *BCA) BankingGetBalance(ctx context.Context, dtoReq BalanceInfoRequest) (dtoResp *BalanceInfoResponse, err error) {
 	ctx = bcaCtx.WithBCASessID(ctx, b.bcaSessID)
 
 	b.log(ctx).Info("=== START BANKING GET_BALANCE ===")
 	b.log(ctx).Infof("REQUEST: %+v", dtoReq)
 
-	dtoResp, err := b.api.bankingGetBalance(ctx, dtoReq)
+	retryOpts := b.retryOptions(ctx)
+	err = retry.Do(func() error {
+		if dtoResp, err = b.api.bankingGetBalance(ctx, dtoReq); err != nil {
+			return err
+		}
+		return errorIfErrCodeESB14009(dtoResp.Error)
+	}, retryOpts...)
+
 	if err != nil {
 		b.log(ctx).Error(errors.Details(err))
 		return nil, errors.Trace(err)
@@ -40,8 +47,7 @@ func (b *BCA) BankingFundTransfer(ctx context.Context, dtoReq FundTransferReques
 			return err
 		}
 		return errorIfErrCodeESB14009(dtoResp.Error)
-	}, retryOpts...,
-	)
+	}, retryOpts...)
 
 	if err != nil {
 		b.log(ctx).Error(errors.Details(err))
@@ -54,13 +60,20 @@ func (b *BCA) BankingFundTransfer(ctx context.Context, dtoReq FundTransferReques
 	return dtoResp, nil
 }
 
-func (b *BCA) BankingFundTransferDomestic(ctx context.Context, dtoReq FundTransferDomesticRequest) (*FundTransferDomesticResponse, error) {
+func (b *BCA) BankingFundTransferDomestic(ctx context.Context, dtoReq FundTransferDomesticRequest) (dtoResp *FundTransferDomesticResponse, err error) {
 	ctx = bcaCtx.WithBCASessID(ctx, b.bcaSessID)
 
 	b.log(ctx).Info("=== START BANKING FUND_TRANSFER_DOMESTIC ===")
 	b.log(ctx).Infof("REQUEST: %+v", dtoReq)
 
-	dtoResp, err := b.api.bankingPostFundTransferDomestic(ctx, dtoReq)
+	retryOpts := b.retryOptions(ctx)
+	err = retry.Do(func() error {
+		if dtoResp, err = b.api.bankingPostFundTransferDomestic(ctx, dtoReq); err != nil {
+			return err
+		}
+		return errorIfErrCodeESB14009(dtoResp.Error)
+	}, retryOpts...)
+
 	if err != nil {
 		b.log(ctx).Error(errors.Details(err))
 		return nil, errors.Trace(err)

@@ -28,6 +28,8 @@ type BCA struct {
 	bcaSessID string
 }
 
+var MaxRetryAttempts int = 2
+
 func New(config Config) *BCA {
 	bca := BCA{
 		config: config,

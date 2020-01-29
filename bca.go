@@ -150,9 +150,8 @@ func (b *BCA) retryDecision(ctx context.Context) func(err error) bool {
 
 	return func(err error) bool {
 		if err == ErrESB14009 {
-			b.log(ctx).Infof("[Retry] to auth")
+			b.log(ctx).Infof("[Retry] start to auth")
 			b.DoAuthentication(ctx)
-
 			return true
 		}
 		return false
@@ -163,6 +162,9 @@ func (b *BCA) retryOptions(ctx context.Context) []retry.Option {
 	return []retry.Option{
 		retry.Attempts(2),
 		retry.RetryIf(b.retryDecision(ctx)),
+		retry.OnRetry(func(n uint, err error) {
+			b.log(ctx).Infof("[Retry] attempts: %d err: %+v", n, err)
+		}),
 	}
 }
 

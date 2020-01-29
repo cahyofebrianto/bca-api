@@ -9,7 +9,9 @@ import (
 	"os"
 	"sync"
 
+	"github.com/avast/retry-go"
 	"github.com/hashicorp/go-retryablehttp"
+	"github.com/juju/errors"
 	"github.com/lithammer/shortuuid"
 	bcaCtx "github.com/purwaren/bca-api/context"
 	"github.com/purwaren/bca-api/logger"
@@ -97,6 +99,69 @@ func (b *BCA) retryPolicy(ctx context.Context, resp *http.Response, err error) (
 	}
 
 	return false, nil
+}
+
+// ========== RETRY V2 (FAIL as not elegant) ============================
+
+func (b *BCA) callWithRetry(ctx context.Context, httpMethod string, path string, additionalHeader map[string]string, bodyReqPayload []byte, dtoResp interface{}) (err error) {
+	attempts := 1
+
+	for {
+		attempts++
+		if err = b.api.call(ctx, httpMethod, path, additionalHeader, bodyReqPayload, dtoResp); err != nil {
+			return errors.Trace(err)
+		}
+
+		// check error
+		dtoError, ok := dtoResp.(Error)
+		if !ok {
+			return
+		}
+
+		if dtoError.ErrorCode == "ESB-14-009" {
+			b.log(ctx).Infof("[Retry] to auth")
+			if _, err = b.DoAuthentication(ctx); err != nil {
+				return errors.Trace(err)
+			}
+		}
+
+		// retry decision
+		if attempts >= MaxRetryAttempts {
+			return
+		}
+	}
+
+}
+
+// ========== RETRY V3 (SUCCESS) ============================
+
+var ErrESB14009 = errors.New("Custom err. Meaning auth err from BCA API (ESB-14-009)")
+
+func errorIfErrCodeESB14009(dtoError Error) error {
+	if dtoError.ErrorCode == "ESB-14-009" {
+		return ErrESB14009
+	}
+	return nil
+}
+
+func (b *BCA) retryDecision(ctx context.Context) func(err error) bool {
+
+	return func(err error) bool {
+		if err == ErrESB14009 {
+			b.log(ctx).Infof("[Retry] to auth")
+			b.DoAuthentication(ctx)
+
+			return true
+		}
+		return false
+	}
+}
+
+func (b *BCA) retryOptions(ctx context.Context) []retry.Option {
+	return []retry.Option{
+		retry.Attempts(2),
+		retry.RetryIf(b.retryDecision(ctx)),
+	}
 }
 
 // === misc func ===

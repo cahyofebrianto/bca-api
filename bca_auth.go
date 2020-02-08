@@ -8,7 +8,7 @@ import (
 )
 
 func (b *BCA) DoAuthentication(ctx context.Context) (*AuthToken, error) {
-	ctx = bcaCtx.With(ctx, bcaCtx.BCASessID(b.bcaSessID))
+	ctx = bcaCtx.With(ctx, bcaCtx.BCASessID(b.api.bcaSessID))
 
 	b.log(ctx).Info("=== START DO_AUTH ===")
 
@@ -18,7 +18,7 @@ func (b *BCA) DoAuthentication(ctx context.Context) (*AuthToken, error) {
 		return nil, errors.Trace(err)
 	}
 
-	b.setAccessToken(dtoResp.AccessToken)
+	b.api.setAccessToken(dtoResp.AccessToken)
 
 	b.log(ctx).Info("=== END DO_AUTH ===")
 

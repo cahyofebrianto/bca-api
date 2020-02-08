@@ -7,12 +7,10 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"sync"
 
 	"github.com/avast/retry-go"
 	"github.com/hashicorp/go-retryablehttp"
 	"github.com/juju/errors"
-	"github.com/lithammer/shortuuid"
 	bcaCtx "github.com/purwaren/bca-api/context"
 	"github.com/purwaren/bca-api/logger"
 	"go.uber.org/zap"
@@ -23,9 +21,6 @@ import (
 type BCA struct {
 	api    *api
 	config Config
-
-	mutex     sync.Mutex
-	bcaSessID string
 }
 
 var MaxRetryAttempts int = 2
@@ -62,15 +57,6 @@ func New(config Config) *BCA {
 	bca.api.retryablehttpClient = retryablehttpClient
 
 	return &bca
-}
-
-func (b *BCA) setAccessToken(accessToken string) {
-	b.mutex.Lock()
-	defer b.mutex.Unlock()
-
-	newSessID := shortuuid.New()
-	b.api.setAccessTokenAndSessID(accessToken, newSessID)
-	b.bcaSessID = newSessID
 }
 
 func (b *BCA) retryPolicy(ctx context.Context, resp *http.Response, err error) (bool, error) {
@@ -171,5 +157,5 @@ func (b *BCA) retryOptions(ctx context.Context) []retry.Option {
 // === misc func ===
 
 func (b *BCA) log(ctx context.Context) *zap.SugaredLogger {
-	return logger.Logger(bcaCtx.With(ctx, bcaCtx.BCASessID(b.bcaSessID)))
+	return logger.Logger(bcaCtx.With(ctx, bcaCtx.BCASessID(b.api.bcaSessID)))
 }

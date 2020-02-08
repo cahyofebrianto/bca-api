@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/go-cleanhttp"
 	"github.com/hashicorp/go-retryablehttp"
 	"github.com/juju/errors"
+	"github.com/lithammer/shortuuid"
 	"github.com/purwaren/bca-api/logger"
 	"go.uber.org/zap"
 
@@ -50,12 +51,14 @@ func newAPI(config Config) *api {
 	return &api
 }
 
-func (api *api) setAccessTokenAndSessID(accessToken, bcaSessID string) {
+func (api *api) setAccessToken(accessToken string) {
 	api.mutex.Lock()
 	defer api.mutex.Unlock()
 
+	newSessID := shortuuid.New()
+
 	api.accessToken = accessToken
-	api.bcaSessID = bcaSessID
+	api.bcaSessID = newSessID
 }
 
 // === AUTH ===

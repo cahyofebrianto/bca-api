@@ -9,7 +9,7 @@ import (
 )
 
 func (b *BCA) BankingGetBalance(ctx context.Context, dtoReq BalanceInfoRequest) (dtoResp *BalanceInfoResponse, err error) {
-	ctx = bcaCtx.With(ctx, bcaCtx.BCASessID(b.bcaSessID))
+	ctx = bcaCtx.With(ctx, bcaCtx.BCASessID(b.api.bcaSessID))
 
 	b.log(ctx).Info("=== START BANKING GET_BALANCE ===")
 	b.log(ctx).Infof("REQUEST: %+v", dtoReq)
@@ -34,7 +34,7 @@ func (b *BCA) BankingGetBalance(ctx context.Context, dtoReq BalanceInfoRequest) 
 }
 
 func (b *BCA) BankingFundTransfer(ctx context.Context, dtoReq FundTransferRequest) (dtoResp *FundTransferResponse, err error) {
-	ctx = bcaCtx.With(ctx, bcaCtx.BCASessID(b.bcaSessID))
+	ctx = bcaCtx.With(ctx, bcaCtx.BCASessID(b.api.bcaSessID))
 
 	dtoReq.CorporateID = b.config.CorporateID
 
@@ -61,7 +61,7 @@ func (b *BCA) BankingFundTransfer(ctx context.Context, dtoReq FundTransferReques
 }
 
 func (b *BCA) BankingFundTransferDomestic(ctx context.Context, dtoReq FundTransferDomesticRequest) (dtoResp *FundTransferDomesticResponse, err error) {
-	ctx = bcaCtx.With(ctx, bcaCtx.BCASessID(b.bcaSessID))
+	ctx = bcaCtx.With(ctx, bcaCtx.BCASessID(b.api.bcaSessID))
 
 	b.log(ctx).Info("=== START BANKING FUND_TRANSFER_DOMESTIC ===")
 	b.log(ctx).Infof("REQUEST: %+v", dtoReq)

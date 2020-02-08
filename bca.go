@@ -171,5 +171,5 @@ func (b *BCA) retryOptions(ctx context.Context) []retry.Option {
 // === misc func ===
 
 func (b *BCA) log(ctx context.Context) *zap.SugaredLogger {
-	return logger.Logger(bcaCtx.WithBCASessID(ctx, b.bcaSessID))
+	return logger.Logger(bcaCtx.With(ctx, bcaCtx.BCASessID(b.bcaSessID)))
 }

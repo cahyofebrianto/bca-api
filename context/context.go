@@ -8,19 +8,29 @@ const (
 	BCASessIDKey  = "bcaSessID"
 )
 
-// https://blog.gopheracademy.com/advent-2016/context-logging/
+type buildCtxFunc func(ctx context.Context) context.Context
 
-// WithRqId returns a context which knows its HTTP request ID
-func WithHTTPReqID(ctx context.Context, reqId string) context.Context {
-	return context.WithValue(ctx, HTTPReqIDKey, reqId)
+func With(ctx context.Context, buildFuncs ...buildCtxFunc) context.Context {
+	for _, buildCtxFunc := range buildFuncs {
+		ctx = buildCtxFunc(ctx)
+	}
+	return ctx
 }
 
-// WithSessionId returns a context which knows its HTTP session ID
-func WithHTTPSessID(ctx context.Context, sessionId string) context.Context {
-	return context.WithValue(ctx, HTTPSessIDKey, sessionId)
+func HTTPReqID(reqID string) buildCtxFunc {
+	return func(ctx context.Context) context.Context {
+		return context.WithValue(ctx, HTTPReqIDKey, reqID)
+	}
 }
 
-// WithBNISessionId returns a context which knows its BNI session ID
-func WithBCASessID(ctx context.Context, sessionId string) context.Context {
-	return context.WithValue(ctx, BCASessIDKey, sessionId)
+func HTTPSessID(reqID string) buildCtxFunc {
+	return func(ctx context.Context) context.Context {
+		return context.WithValue(ctx, HTTPSessIDKey, reqID)
+	}
+}
+
+func BCASessID(reqID string) buildCtxFunc {
+	return func(ctx context.Context) context.Context {
+		return context.WithValue(ctx, BCASessIDKey, reqID)
+	}
 }

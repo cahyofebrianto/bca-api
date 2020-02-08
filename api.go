@@ -215,7 +215,7 @@ func (api *api) call(ctx context.Context, httpMethod string, path string, additi
 
 // === misc func ===
 func (api *api) log(ctx context.Context) *zap.SugaredLogger {
-	return logger.Logger(bcaCtx.WithBCASessID(ctx, api.bcaSessID))
+	return logger.Logger(bcaCtx.With(ctx, bcaCtx.BCASessID(api.bcaSessID)))
 }
 
 func buildURL(baseUrl, paths string, query url.Values) (string, error) {

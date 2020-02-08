@@ -4,9 +4,12 @@ import (
 	"context"
 
 	"github.com/juju/errors"
+	bcaCtx "github.com/purwaren/bca-api/context"
 )
 
 func (b *BCA) DoAuthentication(ctx context.Context) (*AuthToken, error) {
+	ctx = bcaCtx.With(ctx, bcaCtx.BCASessID(b.bcaSessID))
+
 	b.log(ctx).Info("=== START DO_AUTH ===")
 
 	dtoResp, err := b.api.postGetToken(ctx)

@@ -133,14 +133,8 @@ func errorIfErrCodeESB14009(dtoError Error) error {
 }
 
 func (b *BCA) retryDecision(ctx context.Context) func(err error) bool {
-
 	return func(err error) bool {
-		if err == ErrESB14009 {
-			b.log(ctx).Infof("[Retry] start to auth")
-			b.DoAuthentication(ctx)
-			return true
-		}
-		return false
+		return err == ErrESB14009
 	}
 }
 
@@ -149,7 +143,9 @@ func (b *BCA) retryOptions(ctx context.Context) []retry.Option {
 		retry.Attempts(2),
 		retry.RetryIf(b.retryDecision(ctx)),
 		retry.OnRetry(func(n uint, err error) {
-			b.log(ctx).Infof("[Retry] attempts: %d err: %+v", n, err)
+			b.log(ctx).Infof("=== START ON RETRY === [Attempts: %d Err: %+v]", n, err)
+			b.DoAuthentication(ctx)
+			b.log(ctx).Infof("=== END ON RETRY ===")
 		}),
 	}
 }

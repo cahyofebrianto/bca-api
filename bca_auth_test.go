@@ -24,5 +24,5 @@ func TestBCA_DoAuthentication_integration(t *testing.T) {
 	// resp based on sandbox resp
 	dtoResp, err := bca.DoAuthentication(context.Background())
 	require.NoError(t, err)
-	require.NotEmpty(t, dtoResp.Error)
+	require.Empty(t, dtoResp.Error)
 }

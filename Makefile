@@ -6,7 +6,7 @@ get-tools:
 	GO111MODULE=off go get -u -v github.com/golangci/golangci-lint/cmd/golangci-lint
 
 .PHONY: ci
-ci: build test get-tools lint mod-tidy
+ci: test get-tools lint mod-tidy
 
 .PHONY: mod-tidy
 mod-tidy:

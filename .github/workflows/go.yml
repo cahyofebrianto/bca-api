@@ -15,4 +15,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Test, Lint
+        env:
+          URL: ${{ secrets.URL }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          API_KEY: ${{ secrets.API_KEY }}
+          API_SECRET: ${{ secrets.API_SECRET }}
+          CORPORATE_ID: ${{ secrets.CORPORATE_ID }}
+          ORIGIN_HOST: ${{ secrets.ORIGIN_HOST }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          CREDENTIAL_ID: ${{ secrets.CREDENTIAL_ID }}
+          LOG_PATH: ${{ secrets.LOG_PATH }}
         run: make ci

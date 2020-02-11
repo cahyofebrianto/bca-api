@@ -2,3 +2,5 @@ bca.log
 
 # Go test coverage
 coverage.txt
+
+.env

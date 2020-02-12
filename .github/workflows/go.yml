@@ -14,11 +14,11 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
 
-      - name: Setup Env
-        shell: bash
-        run: |
-          echo "::set-env name=GOPATH::${{ github.workspace }}/go"
-          echo "::add-path::${{ github.workspace }}/go/bin"
+      # - name: Setup Env
+      #   shell: bash
+      #   run: |
+      #     echo "::set-env name=GOPATH::${{ github.workspace }}/go"
+      #     echo "::add-path::${{ github.workspace }}/go/bin"
 
       - name: Test, Lint
         env:
@@ -32,4 +32,6 @@ jobs:
           CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
           CREDENTIAL_ID: ${{ secrets.CREDENTIAL_ID }}
           LOG_PATH: ${{ secrets.LOG_PATH }}
-        run: make ci
+        run: |
+          export PATH=$PATH:$(go env GOPATH)/bin
+          make ci

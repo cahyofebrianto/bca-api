@@ -217,8 +217,8 @@ func (api *api) log(ctx context.Context) *zap.SugaredLogger {
 	return logger.Logger(bcaCtx.With(ctx, bcaCtx.BCASessID(api.bcaSessID)))
 }
 
-func buildURL(baseUrl, paths string, query url.Values) (string, error) {
-	u, err := url.Parse(baseUrl)
+func buildURL(baseURL, paths string, query url.Values) (string, error) {
+	u, err := url.Parse(baseURL)
 	if err != nil {
 		return "", errors.Trace(err)
 	}

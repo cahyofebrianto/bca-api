@@ -13,13 +13,16 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+// BCA provide access to BCA API
 type BCA struct {
 	api    *api
 	config Config
 }
 
+// MaxRetryAttempts is how many attempts to retry if API give bad auth response (ErrorCode == "ESB-14-009").
 const MaxRetryAttempts uint = 2
 
+// New return new instance of BCA
 func New(config Config) *BCA {
 	bca := BCA{
 		config: config,
@@ -48,6 +51,7 @@ func New(config Config) *BCA {
 	return &bca
 }
 
+// ErrESB14009 represent auth error response from BCA API with ErrorCode = "ESB-14-009"
 var ErrESB14009 = errors.New("Custom err. Meaning auth err from BCA API (ESB-14-009)")
 
 func errorIfErrCodeESB14009(dtoError Error) error {

@@ -1,4 +1,4 @@
-package bca
+package bca_test
 
 import (
 	"context"
@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/purwaren/bca-api"
 	"github.com/stretchr/testify/require"
 )
 
@@ -15,7 +16,7 @@ func TestBCA_Banking_integration(t *testing.T) {
 	}
 
 	t.Run("BankingGetBalance", func(t *testing.T) {
-		givenConfig := Config{
+		givenConfig := bca.Config{
 			URL:          os.Getenv("URL"),
 			ClientID:     os.Getenv("CLIENT_ID"),
 			ClientSecret: os.Getenv("CLIENT_SECRET"),
@@ -28,18 +29,18 @@ func TestBCA_Banking_integration(t *testing.T) {
 			OriginHost: os.Getenv("ORIGIN_HOST"),
 		}
 
-		bca := New(givenConfig)
+		b := bca.New(givenConfig)
 
 		// resp based on sandbox doc
-		givenDtoReq := BalanceInfoRequest{AccountNumber: "0201245680"}
-		dtoResp, err := bca.BankingGetBalance(context.Background(), givenDtoReq)
+		givenDtoReq := bca.BalanceInfoRequest{AccountNumber: "0201245680"}
+		dtoResp, err := b.BankingGetBalance(context.Background(), givenDtoReq)
 
 		require.NoError(t, err)
 		require.Empty(t, dtoResp.Error)
 	})
 
 	t.Run("BankingFundTransfer", func(t *testing.T) {
-		givenConfig := Config{
+		givenConfig := bca.Config{
 			URL:          os.Getenv("URL"),
 			ClientID:     os.Getenv("CLIENT_ID"),
 			ClientSecret: os.Getenv("CLIENT_SECRET"),
@@ -52,10 +53,10 @@ func TestBCA_Banking_integration(t *testing.T) {
 			OriginHost: os.Getenv("ORIGIN_HOST"),
 		}
 
-		bca := New(givenConfig)
+		b := bca.New(givenConfig)
 
 		// resp based on sandbox doc
-		givenDtoReq := FundTransferRequest{
+		givenDtoReq := bca.FundTransferRequest{
 			SourceAccountNumber:      "0201245680",
 			TransactionID:            "00000001",
 			TransactionDate:          time.Now().Format("2006-01-02"),
@@ -66,14 +67,14 @@ func TestBCA_Banking_integration(t *testing.T) {
 			Remark1:                  "Transfer Test",
 			Remark2:                  "Online Transfer",
 		}
-		dtoResp, err := bca.BankingFundTransfer(context.Background(), givenDtoReq)
+		dtoResp, err := b.BankingFundTransfer(context.Background(), givenDtoReq)
 
 		require.NoError(t, err)
 		require.Empty(t, dtoResp.Error)
 	})
 
 	t.Run("BankingFundTransferDomestic", func(t *testing.T) {
-		givenConfig := Config{
+		givenConfig := bca.Config{
 			URL:          os.Getenv("URL"),
 			ClientID:     os.Getenv("CLIENT_ID"),
 			ClientSecret: os.Getenv("CLIENT_SECRET"),
@@ -89,10 +90,10 @@ func TestBCA_Banking_integration(t *testing.T) {
 			OriginHost: os.Getenv("ORIGIN_HOST"),
 		}
 
-		bca := New(givenConfig)
+		b := bca.New(givenConfig)
 
 		// resp based on sandbox doc
-		givenDtoReq := FundTransferDomesticRequest{
+		givenDtoReq := bca.FundTransferDomesticRequest{
 			TransactionID:            "00000001",
 			TransactionDate:          "2018-05-03",
 			ReferenceID:              "12345/PO/2016",
@@ -108,7 +109,7 @@ func TestBCA_Banking_integration(t *testing.T) {
 			Remark1:                  "Transfer Test",
 			Remark2:                  "Online Transfer",
 		}
-		dtoResp, err := bca.BankingFundTransferDomestic(context.Background(), givenDtoReq)
+		dtoResp, err := b.BankingFundTransferDomestic(context.Background(), givenDtoReq)
 
 		require.NoError(t, err)
 		require.Empty(t, dtoResp.Error)

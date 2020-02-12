@@ -1,5 +1,6 @@
 package bca
 
+// Config is config to access BCA API
 type Config struct {
 	ClientID     string
 	ClientSecret string

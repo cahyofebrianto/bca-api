@@ -1,6 +1,7 @@
 package bca
 
 // === AUTH ===
+
 //AuthToken represents response of BCA OAuth 2.0 response message
 type AuthToken struct {
 	Error
@@ -11,6 +12,7 @@ type AuthToken struct {
 }
 
 // === ERROR ===
+
 //Error represent BCA error response messsage
 type Error struct {
 	ErrorCode    string
@@ -38,6 +40,7 @@ type AccountBalance struct {
 	English          string  `json:",omitempty"`
 }
 
+//BalanceInfoRequest represents account balance information request message
 type BalanceInfoRequest struct {
 	AccountNumber string
 }

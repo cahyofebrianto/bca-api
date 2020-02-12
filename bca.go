@@ -19,8 +19,7 @@ type BCA struct {
 	config Config
 }
 
-// MaxRetryAttempts is how many attempts to retry if API give bad auth response (ErrorCode == "ESB-14-009").
-const MaxRetryAttempts uint = 2
+const maxRetryAttempts uint = 2
 
 // New return new instance of BCA
 func New(config Config) *BCA {
@@ -68,7 +67,7 @@ func (b *BCA) retryDecision(ctx context.Context) func(err error) bool {
 
 func (b *BCA) retryOptions(ctx context.Context) []retry.Option {
 	return []retry.Option{
-		retry.Attempts(MaxRetryAttempts),
+		retry.Attempts(maxRetryAttempts),
 		retry.RetryIf(b.retryDecision(ctx)),
 		retry.OnRetry(func(n uint, err error) {
 			b.log(ctx).Infof("=== START ON RETRY === [Attempts: %d Err: %+v]", n, err)

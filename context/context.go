@@ -2,35 +2,41 @@ package context
 
 import "context"
 
+// Represent context key for storing information in context
 const (
 	HTTPReqIDKey  = "httpReqID"
 	HTTPSessIDKey = "httpSessID"
 	BCASessIDKey  = "bcaSessID"
 )
 
-type buildCtxFunc func(ctx context.Context) context.Context
+// BuildCtxFunc is special type to build a new context
+type BuildCtxFunc func(ctx context.Context) context.Context
 
-func With(ctx context.Context, buildFuncs ...buildCtxFunc) context.Context {
+// With help to build a new context fluently
+func With(ctx context.Context, buildFuncs ...BuildCtxFunc) context.Context {
 	for _, buildCtxFunc := range buildFuncs {
 		ctx = buildCtxFunc(ctx)
 	}
 	return ctx
 }
 
-func HTTPReqID(reqID string) buildCtxFunc {
+// HTTPReqID compose http request ID information in context using With function
+func HTTPReqID(httpReqID string) BuildCtxFunc {
 	return func(ctx context.Context) context.Context {
-		return context.WithValue(ctx, HTTPReqIDKey, reqID)
+		return context.WithValue(ctx, HTTPReqIDKey, httpReqID)
 	}
 }
 
-func HTTPSessID(reqID string) buildCtxFunc {
+// HTTPSessID compose http session ID information in context using With function
+func HTTPSessID(httpSessID string) BuildCtxFunc {
 	return func(ctx context.Context) context.Context {
-		return context.WithValue(ctx, HTTPSessIDKey, reqID)
+		return context.WithValue(ctx, HTTPSessIDKey, httpSessID)
 	}
 }
 
-func BCASessID(reqID string) buildCtxFunc {
+// BCASessID compose BCA session ID information in context using With function
+func BCASessID(bcaSessID string) BuildCtxFunc {
 	return func(ctx context.Context) context.Context {
-		return context.WithValue(ctx, BCASessIDKey, reqID)
+		return context.WithValue(ctx, BCASessIDKey, bcaSessID)
 	}
 }

@@ -69,7 +69,10 @@ func (b *BCA) retryOptions(ctx context.Context) []retry.Option {
 		retry.RetryIf(b.retryDecision(ctx)),
 		retry.OnRetry(func(n uint, err error) {
 			b.log(ctx).Infof("=== START ON RETRY === [Attempts: %d Err: %+v]", n, err)
-			b.DoAuthentication(ctx)
+			_, err = b.DoAuthentication(ctx)
+			if err != nil {
+				b.log(ctx).Error(err)
+			}
 			b.log(ctx).Infof("=== END ON RETRY ===")
 		}),
 	}

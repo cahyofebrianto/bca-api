@@ -18,7 +18,7 @@ type BCA struct {
 	config Config
 }
 
-var MaxRetryAttempts int = 2
+const MaxRetryAttempts uint = 2
 
 func New(config Config) *BCA {
 	bca := BCA{
@@ -65,7 +65,7 @@ func (b *BCA) retryDecision(ctx context.Context) func(err error) bool {
 
 func (b *BCA) retryOptions(ctx context.Context) []retry.Option {
 	return []retry.Option{
-		retry.Attempts(2),
+		retry.Attempts(MaxRetryAttempts),
 		retry.RetryIf(b.retryDecision(ctx)),
 		retry.OnRetry(func(n uint, err error) {
 			b.log(ctx).Infof("=== START ON RETRY === [Attempts: %d Err: %+v]", n, err)

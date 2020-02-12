@@ -1,15 +1,10 @@
 package bca
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
-	"io/ioutil"
-	"net/http"
 	"os"
 
 	"github.com/avast/retry-go"
-	"github.com/hashicorp/go-retryablehttp"
 	"github.com/juju/errors"
 	bcaCtx "github.com/purwaren/bca-api/context"
 	"github.com/purwaren/bca-api/logger"
@@ -50,78 +45,8 @@ func New(config Config) *BCA {
 		// return core
 	}))
 
-	retryablehttpClient := retryablehttp.NewClient()
-	retryablehttpClient.RetryMax = 1
-	retryablehttpClient.CheckRetry = bca.retryPolicy
-
-	bca.api.retryablehttpClient = retryablehttpClient
-
 	return &bca
 }
-
-func (b *BCA) retryPolicy(ctx context.Context, resp *http.Response, err error) (bool, error) {
-	// do not retry on context.Canceled or context.DeadlineExceeded
-	if ctx.Err() != nil {
-		b.log(ctx).Infof("[Not Retry] Got error in context: %+v", ctx.Err())
-		return false, ctx.Err()
-	}
-
-	bodyRespBytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		b.log(ctx).Infof("[Not Retry] Failed to read response body: %+v", err)
-		return false, err
-	}
-	resp.Body = ioutil.NopCloser(bytes.NewBuffer(bodyRespBytes))
-
-	var dtoResp Error
-	if err := json.NewDecoder(bytes.NewReader(bodyRespBytes)).Decode(&dtoResp); err != nil {
-		b.log(ctx).Infof("[Not Retry] Failed to decode error: %+v", err)
-		return false, err
-	}
-
-	if resp.StatusCode == http.StatusUnauthorized || dtoResp.ErrorCode == "ESB-14-009" {
-		b.log(ctx).Infof("[Retry] to auth. Got resp (code: %d, status: %s). Prev err: %+v. ErrorResp: %+v", resp.StatusCode, resp.Status, err, dtoResp)
-		_, errAuth := b.DoAuthentication(ctx)
-
-		return true, errAuth
-	}
-
-	return false, nil
-}
-
-// ========== RETRY V2 (FAIL as not elegant) ============================
-
-func (b *BCA) callWithRetry(ctx context.Context, httpMethod string, path string, additionalHeader map[string]string, bodyReqPayload []byte, dtoResp interface{}) (err error) {
-	attempts := 1
-
-	for {
-		attempts++
-		if err = b.api.call(ctx, httpMethod, path, additionalHeader, bodyReqPayload, dtoResp); err != nil {
-			return errors.Trace(err)
-		}
-
-		// check error
-		dtoError, ok := dtoResp.(Error)
-		if !ok {
-			return
-		}
-
-		if dtoError.ErrorCode == "ESB-14-009" {
-			b.log(ctx).Infof("[Retry] to auth")
-			if _, err = b.DoAuthentication(ctx); err != nil {
-				return errors.Trace(err)
-			}
-		}
-
-		// retry decision
-		if attempts >= MaxRetryAttempts {
-			return
-		}
-	}
-
-}
-
-// ========== RETRY V3 (SUCCESS) ============================
 
 var ErrESB14009 = errors.New("Custom err. Meaning auth err from BCA API (ESB-14-009)")
 

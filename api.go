@@ -14,7 +14,6 @@ import (
 	"time"
 
 	"github.com/hashicorp/go-cleanhttp"
-	"github.com/hashicorp/go-retryablehttp"
 	"github.com/juju/errors"
 	"github.com/lithammer/shortuuid"
 	"github.com/purwaren/bca-api/logger"
@@ -29,9 +28,8 @@ var (
 )
 
 type api struct {
-	config              Config
-	httpClient          *http.Client // for postGetToken only
-	retryablehttpClient *retryablehttp.Client
+	config     Config
+	httpClient *http.Client // for postGetToken only
 
 	mutex       sync.Mutex
 	accessToken string
@@ -41,11 +39,9 @@ type api struct {
 func newAPI(config Config) *api {
 
 	httpClient := cleanhttp.DefaultPooledClient()
-	retryablehttpClient := retryablehttp.NewClient()
 
 	api := api{config: config,
-		httpClient:          httpClient,
-		retryablehttpClient: retryablehttpClient,
+		httpClient: httpClient,
 	}
 
 	return &api

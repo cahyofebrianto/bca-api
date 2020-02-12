@@ -51,19 +51,18 @@ func New(config Config) *BCA {
 	return &bca
 }
 
-// ErrESB14009 represent auth error response from BCA API with ErrorCode = "ESB-14-009"
-var ErrESB14009 = errors.New("Custom err. Meaning auth err from BCA API (ESB-14-009)")
+var errESB14009 = errors.New("Auth err from BCA API (ESB-14-009)")
 
 func errorIfErrCodeESB14009(dtoError Error) error {
 	if dtoError.ErrorCode == "ESB-14-009" {
-		return ErrESB14009
+		return errESB14009
 	}
 	return nil
 }
 
 func (b *BCA) retryDecision(ctx context.Context) func(err error) bool {
 	return func(err error) bool {
-		return err == ErrESB14009
+		return err == errESB14009
 	}
 }
 

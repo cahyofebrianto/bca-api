@@ -2,6 +2,7 @@ package logger
 
 import (
 	"context"
+
 	bcaCtx "github.com/purwaren/bca-api/context"
 
 	"go.uber.org/zap"
@@ -72,13 +73,13 @@ func Logger(ctx context.Context) *zap.SugaredLogger {
 	newLogger := logger
 	if ctx != nil {
 		if ctxHTTPReqID, ok := ctx.Value(bcaCtx.HTTPReqIDKey).(string); ok {
-			newLogger = newLogger.With(zap.String(bcaCtx.HTTPReqIDKey, ctxHTTPReqID))
+			newLogger = newLogger.With(zap.String(bcaCtx.HTTPReqIDKey.String(), ctxHTTPReqID))
 		}
 		if ctxHTTPSessID, ok := ctx.Value(bcaCtx.HTTPSessIDKey).(string); ok {
-			newLogger = newLogger.With(zap.String(bcaCtx.HTTPSessIDKey, ctxHTTPSessID))
+			newLogger = newLogger.With(zap.String(bcaCtx.HTTPSessIDKey.String(), ctxHTTPSessID))
 		}
 		if ctxBNISessID, ok := ctx.Value(bcaCtx.BCASessIDKey).(string); ok {
-			newLogger = newLogger.With(zap.String(bcaCtx.BCASessIDKey, ctxBNISessID))
+			newLogger = newLogger.With(zap.String(bcaCtx.BCASessIDKey.String(), ctxBNISessID))
 		}
 	}
 	return newLogger

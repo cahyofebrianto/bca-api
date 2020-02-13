@@ -15,7 +15,7 @@ func TestContext(t *testing.T) {
 		bcaCtx.HTTPSessID("httpSessID02"),
 		bcaCtx.BCASessID("bcaSessID03"))
 
-	require.Equal(t, "httpReqID01", ctx.Value("httpReqID"))
-	require.Equal(t, "httpSessID02", ctx.Value("httpSessID"))
-	require.Equal(t, "bcaSessID03", ctx.Value("bcaSessID"))
+	require.Equal(t, "httpReqID01", ctx.Value(bcaCtx.HTTPReqIDKey))
+	require.Equal(t, "httpSessID02", ctx.Value(bcaCtx.HTTPSessIDKey))
+	require.Equal(t, "bcaSessID03", ctx.Value(bcaCtx.BCASessIDKey))
 }

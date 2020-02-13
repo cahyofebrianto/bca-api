@@ -4,10 +4,24 @@ import "context"
 
 // Represent context key for storing information in context
 const (
-	HTTPReqIDKey  = "httpReqID"
-	HTTPSessIDKey = "httpSessID"
-	BCASessIDKey  = "bcaSessID"
+	HTTPReqIDKey ctxKey = iota
+	HTTPSessIDKey
+	BCASessIDKey
 )
+
+type ctxKey int
+
+func (c ctxKey) String() string {
+	switch c {
+	case HTTPReqIDKey:
+		return "httpReqID"
+	case HTTPSessIDKey:
+		return "httpSessID"
+	case BCASessIDKey:
+		return "bcaSessID"
+	}
+	return ""
+}
 
 // BuildCtxFunc is special type to build a new context
 type BuildCtxFunc func(ctx context.Context) context.Context

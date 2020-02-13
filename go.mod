@@ -3,8 +3,8 @@ module github.com/purwaren/bca-api
 go 1.13
 
 require (
-	github.com/apex/log v1.1.2 // indirect
 	github.com/avast/retry-go v2.5.0+incompatible
+	github.com/google/uuid v1.1.1 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.1
 	github.com/juju/errors v0.0.0-20190930114154-d42613fe1ab9
 	github.com/juju/loggo v0.0.0-20190526231331-6e530bcce5d8 // indirect

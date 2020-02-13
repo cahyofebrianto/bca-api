@@ -7,6 +7,7 @@ import (
 	bcaCtx "github.com/purwaren/bca-api/context"
 )
 
+// DoAuthentication authenticate using OAuth2
 func (b *BCA) DoAuthentication(ctx context.Context) (*AuthToken, error) {
 	ctx = bcaCtx.With(ctx, bcaCtx.BCASessID(b.api.bcaSessID))
 

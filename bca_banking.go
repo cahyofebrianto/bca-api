@@ -8,6 +8,7 @@ import (
 	bcaCtx "github.com/purwaren/bca-api/context"
 )
 
+// BankingGetBalance get account balance
 func (b *BCA) BankingGetBalance(ctx context.Context, dtoReq BalanceInfoRequest) (dtoResp *BalanceInfoResponse, err error) {
 	ctx = bcaCtx.With(ctx, bcaCtx.BCASessID(b.api.bcaSessID))
 
@@ -33,6 +34,7 @@ func (b *BCA) BankingGetBalance(ctx context.Context, dtoReq BalanceInfoRequest) 
 	return dtoResp, nil
 }
 
+// BankingFundTransfer fund transfer to another BCA account
 func (b *BCA) BankingFundTransfer(ctx context.Context, dtoReq FundTransferRequest) (dtoResp *FundTransferResponse, err error) {
 	ctx = bcaCtx.With(ctx, bcaCtx.BCASessID(b.api.bcaSessID))
 
@@ -60,6 +62,7 @@ func (b *BCA) BankingFundTransfer(ctx context.Context, dtoReq FundTransferReques
 	return dtoResp, nil
 }
 
+// BankingFundTransferDomestic fund transfer to domestic bank account
 func (b *BCA) BankingFundTransferDomestic(ctx context.Context, dtoReq FundTransferDomesticRequest) (dtoResp *FundTransferDomesticResponse, err error) {
 	ctx = bcaCtx.With(ctx, bcaCtx.BCASessID(b.api.bcaSessID))
 

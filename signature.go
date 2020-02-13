@@ -56,3 +56,7 @@ func generateSignature(apiSecret, method, path, accessToken, requestBody, timest
 	}
 	return hex.EncodeToString(mac.Sum(nil)), strToSign, nil
 }
+
+func GenerateSignature(apiSecret, method, path, accessToken, requestBody, timestamp string) (signature string, strToSign string, err error) {
+	return generateSignature(apiSecret, method, path, accessToken, requestBody, timestamp)
+}

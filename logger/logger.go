@@ -11,6 +11,7 @@ import (
 
 var logger *zap.SugaredLogger
 
+// DefaultEncoderConfig is default encoder config of zapcore logging
 var DefaultEncoderConfig zapcore.EncoderConfig = zapcore.EncoderConfig{
 	TimeKey:        "ts",
 	LevelKey:       "level",
@@ -25,6 +26,7 @@ var DefaultEncoderConfig zapcore.EncoderConfig = zapcore.EncoderConfig{
 	EncodeCaller:   zapcore.ShortCallerEncoder,
 }
 
+// DefaultConfig is default config of zapcore logging
 var DefaultConfig zap.Config = zap.Config{
 	Level:            zap.NewAtomicLevelAt(zap.InfoLevel),
 	Development:      false,
@@ -69,6 +71,7 @@ func init() {
 	logger = newLogger.Sugar()
 }
 
+// Logger return zap Sugared Logger with fields from context
 func Logger(ctx context.Context) *zap.SugaredLogger {
 	newLogger := logger
 	if ctx != nil {
@@ -85,10 +88,12 @@ func Logger(ctx context.Context) *zap.SugaredLogger {
 	return newLogger
 }
 
+// SetOptions set zap options
 func SetOptions(opts ...zap.Option) {
 	logger = logger.Desugar().WithOptions(opts...).Sugar()
 }
 
+// With compose new zap Sugared Logger with provided fields
 func With(args ...interface{}) *zap.SugaredLogger {
 	return logger.With(args)
 }

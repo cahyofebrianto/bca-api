@@ -173,7 +173,7 @@ func (api *api) call(ctx context.Context, httpMethod string, path string, additi
 	timestamp := time.Now().Format("2006-01-02T15:04:05.999Z07:00")
 	req.Header.Set("X-BCA-Timestamp", timestamp)
 
-	signature, _, err := generateSignature(api.config.APISecret, httpMethod, path, api.accessToken, string(bodyReqPayload), timestamp)
+	signature, _, err := GenerateSignature(api.config.APISecret, httpMethod, path, api.accessToken, string(bodyReqPayload), timestamp)
 	if err != nil {
 		return errors.Trace(err)
 	}

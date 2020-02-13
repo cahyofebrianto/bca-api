@@ -104,7 +104,7 @@ func Test_generateSignature(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotSign, gotStrToSign, err := generateSignature(tt.args.apiSecret, tt.args.method, tt.args.path, tt.args.accessToken, tt.args.requestBody, tt.args.timestamp)
+			gotSign, gotStrToSign, err := GenerateSignature(tt.args.apiSecret, tt.args.method, tt.args.path, tt.args.accessToken, tt.args.requestBody, tt.args.timestamp)
 			require.NoError(t, err)
 			require.Equal(t, tt.wantStrToSign, gotStrToSign)
 			require.Equal(t, tt.wantSign, gotSign)

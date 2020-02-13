@@ -87,7 +87,3 @@ func (b *BCA) BankingFundTransferDomestic(ctx context.Context, dtoReq FundTransf
 
 	return dtoResp, nil
 }
-
-func (b *BCA) GenerateSignature(apiSecret, method, path, accessToken, requestBody, timestamp string) (signature string, strToSign string, err error) {
-	return generateSignature(apiSecret, method, path, accessToken, requestBody, timestamp)
-}

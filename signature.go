@@ -32,7 +32,8 @@ func sortQueryParam(urlStr string) (string, error) {
 	return u.String(), nil
 }
 
-func generateSignature(apiSecret, method, path, accessToken, requestBody, timestamp string) (signature string, strToSign string, err error) {
+// GenerateSignature generate SHA-256 HMAC signature
+func GenerateSignature(apiSecret, method, path, accessToken, requestBody, timestamp string) (signature string, strToSign string, err error) {
 	canonicalReqBody := canonicalize(requestBody)
 	h := sha256.New()
 	if _, err := h.Write([]byte(canonicalReqBody)); err != nil {

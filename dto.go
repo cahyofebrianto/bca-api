@@ -122,3 +122,40 @@ type FundTransferDomesticResponse struct {
 	PPUNumber       string
 	Status          string
 }
+
+//InquiryBillRequest represents VA inquiry bill message
+type InquiryBillRequest struct {
+	CompanyCode		string
+	CustomerNumber	string
+	RequestID		string
+	ChannelType 	string
+	TransactionDate	string
+	AdditionalData	string
+}
+
+//InquiryBillSingleResponse
+type InquiryBillSingleResponse struct {
+	CompanyCode 	string
+	CustomerNumber	string
+	RequestID		string
+	InquiryStatus	string
+	InquiryReason 	struct {
+		Indonesian		string
+		English			string
+	}
+	CustomerName	string
+	CurrencyCode	string
+	TotalAmount		string
+	SubCompany		string
+	DetailBills		[] struct {
+		BillDescription struct {
+			Indonesian		string
+			English			string
+		}
+		BillAmount		string
+		BillNumber		string
+		BillSubCompany 	string
+	}
+	FreeText 		string
+	AdditionalData	string
+}

@@ -159,3 +159,43 @@ type InquiryBillSingleResponse struct {
 	FreeText 		string
 	AdditionalData	string
 }
+
+//PaymentBillRequest
+type PaymentBillRequest struct {
+	CompanyCode 	string
+	CustomerNumber	string
+	RequestID		string
+	ChannelType 	string
+	CustomerName	string
+	CurrencyCode	string
+	PaidAmount		string
+	TotalAmount		string
+	SubCompany		string
+	TransactionDate	string
+	Reference		string
+	DetailBills		string
+	FlagAdvice		string
+	AdditionalData	string
+}
+
+//PaymentBillResponse
+type PaymentBillResponse struct {
+	CompanyCode			string
+	CustomerNumber		string
+	RequestID			string
+	PaymentFlagStatus	string
+	PaymentFlagReason	struct {
+		Indonesian 		string
+		English			string
+	}
+	CurrencyCode		string
+	PaidAmount			string
+	TotalAmount			string
+	TransactionDate		string
+	DetailBills			string
+	FreeTexts	[]struct {
+		Indonesian		string
+		English			string
+	}
+	AdditionalData		string
+}

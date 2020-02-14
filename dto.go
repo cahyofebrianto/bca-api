@@ -134,28 +134,27 @@ type InquiryBillRequest struct {
 }
 
 //InquiryBillSingleResponse
+type ReasonMessage struct {
+	Indonesian		string
+	English			string
+}
+type DetailBill struct {
+	BillDescription ReasonMessage
+	BillAmount      string
+	BillNumber      string
+	BillSubCompany  string
+}
 type InquiryBillSingleResponse struct {
-	CompanyCode 	string
-	CustomerNumber	string
-	RequestID		string
-	InquiryStatus	string
-	InquiryReason 	struct {
-		Indonesian		string
-		English			string
-	}
-	CustomerName	string
-	CurrencyCode	string
-	TotalAmount		string
-	SubCompany		string
-	DetailBills		[] struct {
-		BillDescription struct {
-			Indonesian		string
-			English			string
-		}
-		BillAmount		string
-		BillNumber		string
-		BillSubCompany 	string
-	}
+	CompanyCode		string
+	CustomerNumber 	string
+	RequestID      	string
+	InquiryStatus  	string
+	InquiryReason  	ReasonMessage
+	CustomerName   	string
+	CurrencyCode   	string
+	TotalAmount    	string
+	SubCompany     	string
+	DetailBills    	DetailBill
 	FreeText 		string
 	AdditionalData	string
 }
@@ -180,22 +179,16 @@ type PaymentBillRequest struct {
 
 //PaymentBillResponse
 type PaymentBillResponse struct {
-	CompanyCode			string
-	CustomerNumber		string
-	RequestID			string
-	PaymentFlagStatus	string
-	PaymentFlagReason	struct {
-		Indonesian 		string
-		English			string
-	}
-	CurrencyCode		string
-	PaidAmount			string
-	TotalAmount			string
-	TransactionDate		string
-	DetailBills			string
-	FreeTexts	[]struct {
-		Indonesian		string
-		English			string
-	}
+	CompanyCode      	string
+	CustomerNumber    	string
+	RequestID         	string
+	PaymentFlagStatus 	string
+	PaymentFlagReason 	ReasonMessage
+	CurrencyCode      	string
+	PaidAmount        	string
+	TotalAmount       	string
+	TransactionDate   	string
+	DetailBills       	string
+	FreeTexts         	[]ReasonMessage
 	AdditionalData		string
 }

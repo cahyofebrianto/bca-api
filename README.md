@@ -6,6 +6,7 @@
 - `GET /banking/v3/corporates/<CorporateID>/accounts/<AccountNum>` (`BankingGetBalance`)
 - `POST /banking/corporates/transfers` (`BankingFundTransfer`)
 - `POST /banking/corporates/transfers/domestic` (`BankingFundTransferDomestic`)
+- `POST /fire/accounts` (`FireInquiryAccount`)
 
 For the detail, see [official documentation of BCA API](https://developer.bca.co.id/documentation/)
 

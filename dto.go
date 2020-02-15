@@ -154,7 +154,7 @@ type InquiryBillSingleResponse struct {
 	CurrencyCode   	string
 	TotalAmount    	string
 	SubCompany     	string
-	DetailBills    	DetailBill
+	DetailBills    	[]DetailBill
 	FreeText 		string
 	AdditionalData	string
 }

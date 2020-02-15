@@ -159,7 +159,7 @@ type InquiryBillSingleResponse struct {
 	TotalAmount    	string
 	SubCompany     	string
 	DetailBills    	[]DetailBill
-	FreeText 		string
+	FreeText 		[]ReasonMessage
 	AdditionalData	string
 }
 

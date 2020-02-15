@@ -1,5 +1,7 @@
 # Unofficial Go SDK for Bank BCA API
 
+![build](https://github.com/purwaren/bca-api/workflows/Go/badge.svg?branch=master)
+
 ## (Currently) Supported API
 
 - `POST /api/oauth/token` (`DoAuthentication`)

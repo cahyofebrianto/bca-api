@@ -123,74 +123,78 @@ type FundTransferDomesticResponse struct {
 	Status          string
 }
 
-//InquiryBillRequest represents VA inquiry bill message
+// InquiryBillRequest represents VA inquiry bill message
 type InquiryBillRequest struct {
-	CompanyCode		string
-	CustomerNumber	string
-	RequestID		string
-	ChannelType 	string
-	TransactionDate	string
-	AdditionalData	string
+	CompanyCode     string
+	CustomerNumber  string
+	RequestID       string
+	ChannelType     string
+	TransactionDate string
+	AdditionalData  string
 }
 
-//InquiryBillSingleResponse
+// ReasonMessage ...
 type ReasonMessage struct {
-	Indonesian		string
-	English			string
+	Indonesian string
+	English    string
 }
+
+// DetailBill ...
 type DetailBill struct {
 	BillDescription ReasonMessage
 	BillAmount      string
 	BillNumber      string
 	BillSubCompany  string
 }
+
+// InquiryBillSingleResponse ...
 type InquiryBillSingleResponse struct {
-	CompanyCode		string
-	CustomerNumber 	string
-	RequestID      	string
-	InquiryStatus  	string
-	InquiryReason  	ReasonMessage
-	CustomerName   	string
-	CurrencyCode   	string
-	TotalAmount    	string
-	SubCompany     	string
-	DetailBills    	DetailBill
-	FreeText 		string
-	AdditionalData	string
+	CompanyCode    string
+	CustomerNumber string
+	RequestID      string
+	InquiryStatus  string
+	InquiryReason  ReasonMessage
+	CustomerName   string
+	CurrencyCode   string
+	TotalAmount    string
+	SubCompany     string
+	DetailBills    DetailBill
+	FreeText       string
+	AdditionalData string
 }
 
-//PaymentBillRequest
+// PaymentBillRequest ...
 type PaymentBillRequest struct {
-	CompanyCode 	string
-	CustomerNumber	string
-	RequestID		string
-	ChannelType 	string
-	CustomerName	string
-	CurrencyCode	string
-	PaidAmount		string
-	TotalAmount		string
-	SubCompany		string
-	TransactionDate	string
-	Reference		string
-	DetailBills		string
-	FlagAdvice		string
-	AdditionalData	string
+	CompanyCode     string
+	CustomerNumber  string
+	RequestID       string
+	ChannelType     string
+	CustomerName    string
+	CurrencyCode    string
+	PaidAmount      string
+	TotalAmount     string
+	SubCompany      string
+	TransactionDate string
+	Reference       string
+	DetailBills     string
+	FlagAdvice      string
+	AdditionalData  string
 }
 
-//PaymentBillResponse
+// PaymentBillResponse ...
 type PaymentBillResponse struct {
-	CompanyCode      	string
-	CustomerNumber    	string
-	RequestID         	string
-	PaymentFlagStatus 	string
-	PaymentFlagReason 	ReasonMessage
-	CurrencyCode      	string
-	PaidAmount        	string
-	TotalAmount       	string
-	TransactionDate   	string
-	DetailBills       	string
-	FreeTexts         	[]ReasonMessage
-	AdditionalData		string
+	CompanyCode       string
+	CustomerNumber    string
+	RequestID         string
+	PaymentFlagStatus string
+	PaymentFlagReason ReasonMessage
+	CurrencyCode      string
+	PaidAmount        string
+	TotalAmount       string
+	TransactionDate   string
+	DetailBills       string
+	FreeTexts         []ReasonMessage
+	AdditionalData    string
 }
 
 // Authentication mostly is used as embedded struct for Fire API request

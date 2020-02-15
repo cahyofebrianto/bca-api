@@ -192,3 +192,38 @@ type PaymentBillResponse struct {
 	FreeTexts         	[]ReasonMessage
 	AdditionalData		string
 }
+
+// Authentication mostly is used as embedded struct for Fire API request
+type Authentication struct {
+	CorporateID string
+	AccessCode  string
+	BranchCode  string
+	UserID      string
+	LocalID     string
+}
+
+// InquiryAccountRequestBeneficiaryDetails is beneficiary details of inquiry account request
+type InquiryAccountRequestBeneficiaryDetails struct {
+	BankCodeType  string
+	BankCodeValue string
+	AccountNumber string
+}
+
+// InquiryAccountResponseBeneficiaryDetails is beneficiary details of inquiry account response
+type InquiryAccountResponseBeneficiaryDetails struct {
+	ServerBeneAccountName string
+}
+
+// InquiryAccountRequest represents inquiry account request message
+type InquiryAccountRequest struct {
+	Authentication     Authentication
+	BeneficiaryDetails InquiryAccountRequestBeneficiaryDetails
+}
+
+// InquiryAccountResponse represents inquiry account response message
+type InquiryAccountResponse struct {
+	Error
+	BeneficiaryDetails InquiryAccountResponseBeneficiaryDetails
+	StatusTransaction  string
+	StatusMessage      string
+}

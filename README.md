@@ -85,3 +85,7 @@ func main() {
 	api.BankingFundTransferDomestic(ctx, fundTransferDomesticReq)
 }
 ```
+
+## Contributing
+
+Read the [Contribution Guide](CONTRIBUTING.md).

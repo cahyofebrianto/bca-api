@@ -2,7 +2,7 @@ package bca
 
 // === AUTH ===
 
-//AuthToken represents response of BCA OAuth 2.0 response message
+// AuthToken represents response of BCA OAuth 2.0 response message
 type AuthToken struct {
 	Error
 	AccessToken string `json:"access_token"`
@@ -13,13 +13,13 @@ type AuthToken struct {
 
 // === ERROR ===
 
-//Error represent BCA error response messsage
+// Error represent BCA error response messsage
 type Error struct {
 	ErrorCode    string
 	ErrorMessage ErrorLang
 }
 
-//ErrorLang represent BCA error response message language
+// ErrorLang represent BCA error response message language
 type ErrorLang struct {
 	Indonesian string
 	English    string
@@ -27,7 +27,7 @@ type ErrorLang struct {
 
 // === BCA ===
 
-//AccountBalance represents account balance information
+// AccountBalance represents account balance information
 type AccountBalance struct {
 	AccountNumber    string
 	Currency         string  `json:",omitempty"`
@@ -40,19 +40,19 @@ type AccountBalance struct {
 	English          string  `json:",omitempty"`
 }
 
-//BalanceInfoRequest represents account balance information request message
+// BalanceInfoRequest represents account balance information request message
 type BalanceInfoRequest struct {
 	AccountNumber string
 }
 
-//BalanceInfoResponse represents account balance information response message
+// BalanceInfoResponse represents account balance information response message
 type BalanceInfoResponse struct {
 	Error
 	AccountDetailDataSuccess []AccountBalance `json:",omitempty"`
 	AccountDetailDataFailed  []AccountBalance `json:",omitempty"`
 }
 
-//AccountStatement represents account statement information
+// AccountStatement represents account statement information
 type AccountStatement struct {
 	TransactionDate   string
 	BranchCode        string
@@ -62,7 +62,7 @@ type AccountStatement struct {
 	Trailer           string
 }
 
-//AccountStatementResponse represents account statement response message
+// AccountStatementResponse represents account statement response message
 type AccountStatementResponse struct {
 	Error
 	StartDate    string
@@ -72,7 +72,7 @@ type AccountStatementResponse struct {
 	Data         []AccountStatement
 }
 
-//FundTransferRequest represents fund transfer request message
+// FundTransferRequest represents fund transfer request message
 type FundTransferRequest struct {
 	CorporateID              string
 	SourceAccountNumber      string
@@ -86,7 +86,7 @@ type FundTransferRequest struct {
 	Remark2                  string
 }
 
-//FundTransferResponse represents fund transfer response message
+// FundTransferResponse represents fund transfer response message
 type FundTransferResponse struct {
 	Error
 	TransactionID   string
@@ -95,7 +95,7 @@ type FundTransferResponse struct {
 	Status          string
 }
 
-//FundTransferDomesticRequest represents fund transfer request message
+// FundTransferDomesticRequest represents fund transfer request message
 type FundTransferDomesticRequest struct {
 	TransactionID            string
 	TransactionDate          string
@@ -113,7 +113,7 @@ type FundTransferDomesticRequest struct {
 	Remark2                  string
 }
 
-//FundTransferDomesticResponse represents fund transfer response message
+// FundTransferDomesticResponse represents fund transfer response message
 type FundTransferDomesticResponse struct {
 	Error
 	TransactionID   string
@@ -123,27 +123,31 @@ type FundTransferDomesticResponse struct {
 	Status          string
 }
 
-//InquiryBillRequest represents VA inquiry bill message
+// InquiryBillRequest represents VA inquiry bill message
 type InquiryBillRequest struct {
-	CompanyCode		string
-	CustomerNumber	string
-	RequestID		string
-	ChannelType 	string
-	TransactionDate	string
-	AdditionalData	string
+	CompanyCode     string
+	CustomerNumber  string
+	RequestID       string
+	ChannelType     string
+	TransactionDate string
+	AdditionalData  string
 }
 
-//InquiryBillSingleResponse
+// ReasonMessage ...
 type ReasonMessage struct {
-	Indonesian		string
-	English			string
+	Indonesian string
+	English    string
 }
+
+// DetailBill ...
 type DetailBill struct {
 	BillDescription ReasonMessage
 	BillAmount      string
 	BillNumber      string
 	BillSubCompany  string
 }
+
+// InquiryBillSingleResponse ...
 type InquiryBillSingleResponse struct {
 	CompanyCode		string
 	CustomerNumber 	string
@@ -159,36 +163,71 @@ type InquiryBillSingleResponse struct {
 	AdditionalData	string
 }
 
-//PaymentBillRequest
+// PaymentBillRequest ...
 type PaymentBillRequest struct {
-	CompanyCode 	string
-	CustomerNumber	string
-	RequestID		string
-	ChannelType 	string
-	CustomerName	string
-	CurrencyCode	string
-	PaidAmount		string
-	TotalAmount		string
-	SubCompany		string
-	TransactionDate	string
-	Reference		string
-	DetailBills		string
-	FlagAdvice		string
-	AdditionalData	string
+	CompanyCode     string
+	CustomerNumber  string
+	RequestID       string
+	ChannelType     string
+	CustomerName    string
+	CurrencyCode    string
+	PaidAmount      string
+	TotalAmount     string
+	SubCompany      string
+	TransactionDate string
+	Reference       string
+	DetailBills     string
+	FlagAdvice      string
+	AdditionalData  string
 }
 
-//PaymentBillResponse
+// PaymentBillResponse ...
 type PaymentBillResponse struct {
-	CompanyCode      	string
-	CustomerNumber    	string
-	RequestID         	string
-	PaymentFlagStatus 	string
-	PaymentFlagReason 	ReasonMessage
-	CurrencyCode      	string
-	PaidAmount        	string
-	TotalAmount       	string
-	TransactionDate   	string
-	DetailBills       	string
-	FreeTexts         	[]ReasonMessage
-	AdditionalData		string
+	CompanyCode       string
+	CustomerNumber    string
+	RequestID         string
+	PaymentFlagStatus string
+	PaymentFlagReason ReasonMessage
+	CurrencyCode      string
+	PaidAmount        string
+	TotalAmount       string
+	TransactionDate   string
+	DetailBills       string
+	FreeTexts         []ReasonMessage
+	AdditionalData    string
+}
+
+// Authentication mostly is used as embedded struct for Fire API request
+type Authentication struct {
+	CorporateID string
+	AccessCode  string
+	BranchCode  string
+	UserID      string
+	LocalID     string
+}
+
+// InquiryAccountRequestBeneficiaryDetails is beneficiary details of inquiry account request
+type InquiryAccountRequestBeneficiaryDetails struct {
+	BankCodeType  string
+	BankCodeValue string
+	AccountNumber string
+}
+
+// InquiryAccountResponseBeneficiaryDetails is beneficiary details of inquiry account response
+type InquiryAccountResponseBeneficiaryDetails struct {
+	ServerBeneAccountName string
+}
+
+// InquiryAccountRequest represents inquiry account request message
+type InquiryAccountRequest struct {
+	Authentication     Authentication
+	BeneficiaryDetails InquiryAccountRequestBeneficiaryDetails
+}
+
+// InquiryAccountResponse represents inquiry account response message
+type InquiryAccountResponse struct {
+	Error
+	BeneficiaryDetails InquiryAccountResponseBeneficiaryDetails
+	StatusTransaction  string
+	StatusMessage      string
 }

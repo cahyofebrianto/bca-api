@@ -149,6 +149,21 @@ func (api *api) bankingPostFundTransferDomestic(ctx context.Context, dtoReq Fund
 	return &fundTransferDomesticResp, nil
 }
 
+func (api *api) firePostInquiryAccount(ctx context.Context, dtoReq InquiryAccountRequest) (*InquiryAccountResponse, error) {
+	path := fmt.Sprintf("/fire/accounts")
+
+	jsonReq, err := json.Marshal(dtoReq)
+	if err != nil {
+		return nil, errors.Trace(err)
+	}
+
+	var inquiryAccountResp InquiryAccountResponse
+	if err := api.call(ctx, http.MethodPost, path, nil, jsonReq, &inquiryAccountResp); err != nil {
+		return nil, errors.Trace(err)
+	}
+	return &inquiryAccountResp, nil
+}
+
 // Generic HTTP request to API
 func (api *api) call(ctx context.Context, httpMethod string, path string, additionalHeader map[string]string, bodyReqPayload []byte, dtoResp interface{}) (err error) {
 	// urlQuery := url.Values{"access_token": []string{api.accessToken}}

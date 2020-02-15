@@ -1,11 +1,14 @@
 # Unofficial Go SDK for Bank BCA API
 
+![build](https://github.com/purwaren/bca-api/workflows/Go/badge.svg?branch=master)
+
 ## (Currently) Supported API
 
 - `POST /api/oauth/token` (`DoAuthentication`)
 - `GET /banking/v3/corporates/<CorporateID>/accounts/<AccountNum>` (`BankingGetBalance`)
 - `POST /banking/corporates/transfers` (`BankingFundTransfer`)
 - `POST /banking/corporates/transfers/domestic` (`BankingFundTransferDomestic`)
+- `POST /fire/accounts` (`FireInquiryAccount`)
 
 For the detail, see [official documentation of BCA API](https://developer.bca.co.id/documentation/)
 
@@ -82,3 +85,7 @@ func main() {
 	api.BankingFundTransferDomestic(ctx, fundTransferDomesticReq)
 }
 ```
+
+## Contributing
+
+Read the [Contribution Guide](CONTRIBUTING.md).

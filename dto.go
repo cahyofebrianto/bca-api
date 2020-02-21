@@ -210,7 +210,7 @@ type PaymentBillResponse struct {
 	PaidAmount        string
 	TotalAmount       string
 	TransactionDate   string
-	DetailBills       string
+	DetailBills       []DetailBill
 	FreeTexts         []ReasonMessage
 	AdditionalData    string
 }

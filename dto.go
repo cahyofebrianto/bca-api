@@ -1,5 +1,7 @@
 package bca
 
+import validation "github.com/go-ozzo/ozzo-validation"
+
 // === AUTH ===
 
 // AuthToken represents response of BCA OAuth 2.0 response message
@@ -133,6 +135,14 @@ type InquiryBillRequest struct {
 	AdditionalData  string
 }
 
+func (m InquiryBillRequest) Validate() error {
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.CustomerNumber, validation.Required),
+		validation.Field(&m.CompanyCode, validation.Required),
+		validation.Field(&m.ChannelType, validation.Required),
+	)
+}
+
 // ReasonMessage ...
 type ReasonMessage struct {
 	Indonesian string
@@ -179,6 +189,14 @@ type PaymentBillRequest struct {
 	DetailBills     string
 	FlagAdvice      string
 	AdditionalData  string
+}
+
+func (m PaymentBillRequest) Validate() error {
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.CompanyCode, validation.Required),
+		validation.Field(&m.CustomerNumber, validation.Required),
+		validation.Field(&m.PaidAmount, validation.Required),
+	)
 }
 
 // PaymentBillResponse ...

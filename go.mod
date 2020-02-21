@@ -3,7 +3,9 @@ module github.com/purwaren/bca-api
 go 1.13
 
 require (
+	github.com/asaskevich/govalidator v0.0.0-20200108200545-475eaeb16496 // indirect
 	github.com/avast/retry-go v2.5.0+incompatible
+	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/google/uuid v1.1.1 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.1
 	github.com/juju/errors v0.0.0-20190930114154-d42613fe1ab9

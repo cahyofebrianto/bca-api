@@ -89,3 +89,26 @@ func main() {
 ## Contributing
 
 Read the [Contribution Guide](CONTRIBUTING.md).
+
+### Production Debugging Tips
+
+Log is formatted in JSON with fields like below:
+
+```json
+{
+  "level": "info",
+  "ts": "2020-02-11T22:33:08.220362+07:00",
+  "caller": "bca-api/bca_banking.go:67",
+  "msg": "REQUEST: {TransactionID:00000001 TransactionDate:2018-05-03 ReferenceID:12345/PO/2016 SourceAccountNumber:0201245680 BeneficiaryAccountNumber:0201245501 BeneficiaryBankCode:BRONINJA BeneficiaryName:Tester Amount:100000 TransferType:LLG BeneficiaryCustType:1 BeneficiaryCustResidence:1 CurrencyCode:IDR Remark1:Transfer Test Remark2:Online Transfer}",
+  "httpReqID": "QGSB9jjVifVUie9NznfMwW",
+  "httpSessID": "foouser@domain.com",
+  "bcaSessID": "ddFPSL3WbiVDsW8zLxRoc4"
+}
+```
+
+We can query the logs using [`jq`](https://stedolan.github.io/jq/) to quickly find the root cause of an error. It is recommended to set/provide context with `httpReqID` before calling a method. If so, all logs within that method will be attached with `httpReqID` field.
+
+```shell
+$ jq 'select(.level == "error")' bca.log # find all logs with level "error"
+$ jq 'select(.httpReqID == "QGSB9jjVifVUie9NznfMwW")' bca.log # find all logs with httpReqID "QGSB9jjVifVUie9NznfMwW"
+```

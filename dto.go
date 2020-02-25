@@ -146,7 +146,7 @@ func (m InquiryBillRequest) Validate() error {
 }
 func (m InquiryBillRequest) ValidateTransDate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.TransactionDate, validation.Date("2006-01-02T15:04:05.999Z07:00")),
+		validation.Field(&m.TransactionDate, validation.Date("24/02/202014:52:10")),
 	)
 }
 

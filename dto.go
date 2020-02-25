@@ -202,7 +202,15 @@ func (m PaymentBillRequest) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.CompanyCode, validation.Required),
 		validation.Field(&m.CustomerNumber, validation.Required),
+		validation.Field(&m.RequestID, validation.Required),
+		validation.Field(&m.ChannelType, validation.Required),
+		validation.Field(&m.TransactionDate, validation.Required),
 		validation.Field(&m.PaidAmount, validation.Required),
+	)
+}
+func (m PaymentBillRequest) ValidateTransDate() error {
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.TransactionDate, validation.Date("02/01/2006 15:04:05")),
 	)
 }
 

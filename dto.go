@@ -193,7 +193,7 @@ type PaymentBillRequest struct {
 	SubCompany      string
 	TransactionDate string
 	Reference       string
-	DetailBills     string
+	DetailBills     []DetailBill
 	FlagAdvice      string
 	AdditionalData  string
 }

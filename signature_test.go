@@ -75,6 +75,25 @@ func Test_generateSignature(t *testing.T) {
 			wantStrToSign: "GET:/banking/v2/corporates/corpid/accounts/0063001004:NopUsBuSbT3eNrQTfcEZN2aAL52JT1SlRgoL1MIslsX5gGIgv4YUf:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855:2017-09-30T22:03:35.800+07:00",
 			wantErr:       false,
 		},
+		{name: "go/testGenerateSign/POST VA", args: args{
+			apiSecret:   "4adfd936-61ca-4602-9b4b-4dd6b19abb0f",
+			method:      "POST",
+			path:        "/webhook/bca/inquiry-bills",
+			accessToken: "uAG5NYeecImOykoCAQbL6Nl0emC5yJ2M",
+			requestBody: `{
+        "CompanyCode": "20114",
+        "CustomerNumber": "087888857307",
+        "RequestID": "202002241437331226900030239310",
+        "ChannelType": "6014",
+        "TransactionDate": "24/02/202014:52:10",
+        "AdditionalData": "test"
+}`,
+			timestamp:   "2020-02-24T14:53:43.000+07:00",
+		},
+			wantSign: 		"91d10d5405fafb311f617872ad796fe4fb26cc763e6dc2a988dcee71b926d3c4",
+			wantStrToSign:	"POST:/webhook/bca/inquiry-bills:uAG5NYeecImOykoCAQbL6Nl0emC5yJ2M:ad4fa9e73f907d0924a274776ef8064377d52b9edda38c330d49f66978a13b8e:2020-02-24T14:53:43.000+07:00",
+			wantErr:		false,
+		},
 		// TODO: STILL FAILED
 		// {name: "php-bca/testGenerateSign2/GET Example", args: args{
 		// 	apiSecret:   "9db65b91-01ff-46ec-9274-3f234b677450",

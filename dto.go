@@ -169,6 +169,7 @@ type InquiryBillSingleResponse struct {
 	CompanyCode		string
 	CustomerNumber 	string
 	RequestID      	string
+	ChannelType 	string
 	InquiryStatus  	string
 	InquiryReason  	ReasonMessage
 	CustomerName   	string

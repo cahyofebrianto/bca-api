@@ -164,6 +164,12 @@ type DetailBill struct {
 	BillSubCompany  string
 }
 
+type DetailBillPayment struct {
+	BillNumber 		string
+	Status			string
+	Reason 			ReasonMessage
+}
+
 // InquiryBillSingleResponse ...
 type InquiryBillSingleResponse struct {
 	CompanyCode		string
@@ -226,7 +232,7 @@ type PaymentBillResponse struct {
 	PaidAmount        string
 	TotalAmount       string
 	TransactionDate   string
-	DetailBills       []DetailBill
+	DetailBills       []DetailBillPayment
 	FreeTexts         []ReasonMessage
 	AdditionalData    string
 }

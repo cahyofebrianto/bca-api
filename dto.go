@@ -210,13 +210,26 @@ func (m PaymentBillRequest) Validate() error {
 		validation.Field(&m.CustomerNumber, validation.Required),
 		validation.Field(&m.RequestID, validation.Required),
 		validation.Field(&m.ChannelType, validation.Required),
+		validation.Field(&m.CustomerName, validation.Required),
+		validation.Field(&m.CurrencyCode, validation.Required),
+		validation.Field(&m.PaidAmount, validation.Required),
+		validation.Field(&m.TotalAmount, validation.Required),
 		validation.Field(&m.TransactionDate, validation.Required),
 		validation.Field(&m.PaidAmount, validation.Required),
+		validation.Field(&m.FlagAdvice, validation.Required),
+		validation.Field(&m.SubCompany, validation.Required),
+		validation.Field(&m.Reference, validation.Required),
 	)
 }
 func (m PaymentBillRequest) ValidateTransDate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.TransactionDate, validation.Date("02/01/2006 15:04:05")),
+	)
+}
+
+func (m PaymentBillRequest) ValidateFlagAdvice() error {
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.FlagAdvice, validation.In("Y", "N")),
 	)
 }
 

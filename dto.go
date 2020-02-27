@@ -236,10 +236,11 @@ func (m PaymentBillRequest) ValidateFlagAdvice() error {
 // PaymentBillResponse ...
 type PaymentBillResponse struct {
 	CompanyCode       string
-	CustomerNumber    string
+	CustomerName	  string
 	RequestID         string
 	PaymentFlagStatus string
 	PaymentFlagReason ReasonMessage
+	CustomerNumber    string
 	CurrencyCode      string
 	PaidAmount        string
 	TotalAmount       string

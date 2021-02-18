@@ -1,4 +1,4 @@
-# Unofficial Go SDK for Bank BCA API
+# Go SDK for Bank BCA API
 
 ![build](https://github.com/purwaren/bca-api/workflows/Go/badge.svg?branch=master)
 
